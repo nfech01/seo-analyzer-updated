@@ -55,7 +55,9 @@ class Cache
         }
         if ($hasKey) {
             try {
-                $value = $this->adapter->get($cacheKey);
+                $value = $this->adapter->get($cacheKey, function($value) {
+                    return $value;
+                });
             } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
                 return false;
             }
