@@ -2,21 +2,21 @@
 
 namespace SeoAnalyzer;
 
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
-use Symfony\Component\Cache\Simple\AbstractCache;
-use Symfony\Component\Cache\Simple\FilesystemCache;
 
 class Cache
 {
     /**
-     * @var AbstractCache
+     * @var AbstractAdapter
      */
     public $adapter;
 
     public function __construct(string $adapterClass = null, $ttl = 300)
     {
         if (empty($adapterClass)) {
-            $adapterClass = FilesystemCache::class;
+            $adapterClass = FilesystemAdapter::class;
         }
         $this->adapter = new $adapterClass('seoanalyzer', $ttl);
     }
