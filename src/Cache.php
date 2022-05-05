@@ -70,7 +70,7 @@ class Cache
         $cacheItem->set($value);
 
         if ($ttl ) {
-            $cacheItem->expiresAt($ttl);
+            $cacheItem->expiresAfter($ttl);
         }
 
         return $this->adapter->save($cacheItem);
