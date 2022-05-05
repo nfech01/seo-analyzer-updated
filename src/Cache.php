@@ -2,14 +2,13 @@
 
 namespace SeoAnalyzer;
 
-use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
 
 class Cache
 {
     /**
-     * @var AbstractAdapter
+     * @var AbstractCache
      */
     public $adapter;
 
@@ -47,20 +46,12 @@ class Cache
      */
     public function get(string $cacheKey)
     {
+        $cacheItem = $this->adapter->getItem($cacheKey);
         $value = false;
-        try {
-            $hasKey = $this->adapter->has($cacheKey);
-        } catch (InvalidArgumentException $e) {
-            return false;
-        }
+        $hasKey = $cacheItem->isHit();
+
         if ($hasKey) {
-            try {
-                $value = $this->adapter->get($cacheKey, function($value) {
-                    return $value;
-                });
-            } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
-                return false;
-            }
+            $value = $cacheItem->get();
         }
         return $value;
     }
@@ -75,10 +66,13 @@ class Cache
      */
     public function set(string $cacheKey, $value, $ttl = null): bool
     {
-        try {
-            return $this->adapter->set($cacheKey, $value, $ttl);
-        } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
-            return false;
+        $cacheItem = $this->adapter->getItem($cacheKey);
+        $cacheItem->set($value);
+
+        if ($ttl ) {
+            $cacheItem->expiresAt($ttl);
         }
+
+        return $this->adapter->save($cacheItem);
     }
 }
