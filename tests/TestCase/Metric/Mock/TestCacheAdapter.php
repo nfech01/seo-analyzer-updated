@@ -2,16 +2,10 @@
 
 namespace Tests\TestCase\Metric\Mock;
 
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
 
-class TestCacheAdapter extends FilesystemCache
+class TestCacheAdapter extends FilesystemAdapter
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function get($key, $default = null)
-    {
-        throw new InvalidArgumentException();
-    }
+
 }
