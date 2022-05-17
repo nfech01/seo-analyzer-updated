@@ -22,11 +22,11 @@ class MetaMetric extends AbstractMetric
         'missing_description' => [
             self::IMPACT => 5,
             self::MESSAGE => 'Missing page meta description tag. We strongly recommend to add it.' .
-                ' It should be between 30 and 120 characters and should include your main keyword'
+                ' It should be between 50 and 160 characters and should include your main keyword'
         ],
         'description_length' => [
             self::IMPACT => 3,
-            self::MESSAGE => 'The page meta description length should be between 30 and 120 characters.' .
+            self::MESSAGE => 'The page meta description length should be between 50 and 160 characters.' .
                 ' Description should also include your main keyword'
         ]
     ];
@@ -68,7 +68,7 @@ class MetaMetric extends AbstractMetric
             && (strlen($this->value[Factor::TITLE]) < $minLength || strlen($this->value[Factor::TITLE]) > $maxLength);
     }
 
-    private function checkMetaDescriptionTag($minLength = 30, $maxLength = 120)
+    private function checkMetaDescriptionTag($minLength = 50, $maxLength = 160)
     {
         return isset($this->value[Factor::META][self::DESCRIPTION])
             && (strlen($this->value[Factor::META][self::DESCRIPTION]) < $minLength
